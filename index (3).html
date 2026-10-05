@@ -1,0 +1,706 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Fichas de Mesa ChatMPA</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+<style>
+/* Layout: herramienta de captura. Barra superior fija, navegación de secciones a la izquierda,
+   formulario en una columna, barra de acciones fija abajo. Paleta del deck ChatMPA × CONANP. */
+:root{
+  --bg:#f3eee4; --surface:#faf7f0; --field:#ffffff; --ink:#142a40; --head:#0f2a45; --muted:#5d6d7a;
+  --line:#d9d2c4; --accent:#1c7fb0; --accent-soft:#dcf1fa; --primary:#0f2a45; --on-primary:#ffffff;
+  --ok:#1f7a5c; --ok-soft:#e1f3ec; --warn:#85560f; --warn-soft:#fbefd6; --bad:#a03a3a; --bad-soft:#f8e3e3;
+  --font:"Inter",ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0b1826; --surface:#102236; --field:#0d1d2e; --ink:#e6edf3; --head:#f1f6fa; --muted:#9db0bf;
+    --line:#25405a; --accent:#5ec0ee; --accent-soft:#12364b; --primary:#59b8e7; --on-primary:#06202f;
+    --ok:#5fcf9f; --ok-soft:#0f3328; --warn:#e8b45c; --warn-soft:#3a2b0e; --bad:#ee8f8f; --bad-soft:#401d1d;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0b1826; --surface:#102236; --field:#0d1d2e; --ink:#e6edf3; --head:#f1f6fa; --muted:#9db0bf;
+  --line:#25405a; --accent:#5ec0ee; --accent-soft:#12364b; --primary:#59b8e7; --on-primary:#06202f;
+  --ok:#5fcf9f; --ok-soft:#0f3328; --warn:#e8b45c; --warn-soft:#3a2b0e; --bad:#ee8f8f; --bad-soft:#401d1d;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{color-scheme:light}
+body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--font);font-size:15px;line-height:1.5;padding-bottom:120px}
+button,input,select,textarea{font:inherit;color:inherit}
+h1,h2,h3,p,ul,ol{margin:0}
+h2{font-size:21px;line-height:1.2;letter-spacing:-.015em;color:var(--head);text-wrap:balance}
+h3{font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.wrap{max-width:1180px;margin-inline:auto;padding-inline:16px}
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--bg);border-bottom:1px solid var(--line)}
+.top-row{display:flex;flex-wrap:wrap;align-items:center;gap:12px 20px;padding-block:12px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;color:var(--head);letter-spacing:-.02em}
+.mark{width:28px;height:28px;border-radius:50%;background:var(--head);position:relative;flex:none}
+.mark:after{content:"";position:absolute;width:9px;height:9px;border-radius:50%;background:var(--accent);right:1px;top:1px}
+.pick{display:flex;align-items:center;gap:8px;min-width:0;flex:1 1 320px}
+.pick label{font-size:12px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);flex:none}
+select,input[type=text],input[type=email],input[type=tel],input[type=date],textarea{
+  width:100%;background:var(--field);border:1px solid var(--line);border-radius:8px;padding:9px 11px;min-width:0}
+select{cursor:pointer}
+textarea{resize:vertical;min-height:84px;line-height:1.45}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.tabs{display:flex;gap:6px;padding-bottom:10px;overflow-x:auto}
+.tab{background:transparent;border:1px solid var(--line);border-radius:999px;padding:7px 14px;font-weight:600;color:var(--muted);cursor:pointer;white-space:nowrap}
+.tab[aria-selected="true"]{background:var(--primary);color:var(--on-primary);border-color:var(--primary)}
+.banner{margin-top:14px;padding:11px 14px;border-radius:10px;background:var(--warn-soft);color:var(--warn);font-weight:500}
+.layout{display:grid;grid-template-columns:210px minmax(0,1fr);gap:36px;padding-block:24px}
+.nav{position:sticky;top:calc(env(safe-area-inset-top,0px) + 118px);align-self:start;display:flex;flex-direction:column;gap:2px}
+.nav button{display:flex;justify-content:space-between;gap:10px;text-align:left;background:transparent;border:0;border-radius:8px;padding:8px 10px;color:var(--muted);cursor:pointer;font-weight:500}
+.nav button:hover{background:var(--accent-soft);color:var(--head)}
+.nav .n{font-variant-numeric:tabular-nums;font-size:12px;white-space:nowrap}
+.nav .done{color:var(--ok);font-weight:700}
+.sec{padding-block:6px 30px;scroll-margin-top:150px}
+.sec-h{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;margin-bottom:6px}
+.eyebrow{font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--accent);font-weight:700;margin-bottom:4px}
+.count{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+.intro{color:var(--muted);margin-bottom:12px;max-width:68ch}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px 20px;margin-top:14px}
+.fld{display:flex;flex-direction:column;gap:5px;min-width:0}
+.fld.full{grid-column:1/-1}
+.fld>label,.fld>.lbl{font-weight:650;color:var(--head)}
+.hint{font-size:13px;color:var(--muted);max-width:70ch}
+.req{color:var(--bad);font-weight:700}
+.cnt{font-size:12px;color:var(--warn);font-variant-numeric:tabular-nums;align-self:flex-end}
+.err{font-size:13px;color:var(--bad);font-weight:600}
+.checks{display:flex;flex-wrap:wrap;gap:8px 16px}
+.checks label{display:flex;align-items:center;gap:7px;font-weight:500}
+.ctx{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin-bottom:26px}
+.ctx summary{cursor:pointer;font-weight:700;color:var(--head);font-size:17px}
+.ctx summary span{font-weight:500;color:var(--muted);font-size:14px}
+.when{margin-top:8px;color:var(--muted)}
+.ctx-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 28px;margin-top:14px}
+.ctx ul,.ctx ol{padding-left:18px;display:flex;flex-direction:column;gap:4px;margin-top:6px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.chip{background:var(--field);border:1px solid var(--line);border-radius:7px;padding:3px 9px;font-size:13px;font-weight:550}
+.ctx .blk+.blk{margin-top:14px}
+.note{background:var(--accent-soft);color:var(--head);border-radius:10px;padding:12px 14px;margin-bottom:24px;max-width:78ch}
+.bar{position:fixed;left:0;right:0;bottom:0;z-index:30;background:var(--surface);border-top:1px solid var(--line);padding:10px 0 calc(10px + env(safe-area-inset-bottom,0px))}
+.bar-in{display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px}
+.stat{flex:1 1 280px;min-width:0;font-size:13.5px;color:var(--muted)}
+.stat.ok{color:var(--ok)} .stat.warn{color:var(--warn)} .stat.bad{color:var(--bad)}
+.stat a{color:inherit;font-weight:700}
+.btns{display:flex;flex-wrap:wrap;gap:8px}
+.btn{border:1px solid var(--line);background:var(--field);border-radius:9px;padding:9px 15px;font-weight:650;cursor:pointer;color:var(--head)}
+.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--primary);color:var(--on-primary);border-color:var(--primary)}
+.btn[disabled]{opacity:.6;cursor:progress}
+.btn.quiet{border-color:transparent;background:transparent;color:var(--muted)}
+.codebox{margin-top:14px;padding:12px 14px;border-radius:10px;background:var(--accent-soft);display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px}
+.codebox label{font-weight:650;color:var(--head)}
+.codebox input{max-width:240px;flex:1 1 160px}
+.fallback{margin-top:10px;display:none}
+.fallback.show{display:block}
+.fallback textarea{min-height:140px;font-size:13px}
+@media (max-width:900px){
+  .layout{grid-template-columns:minmax(0,1fr);gap:8px}
+  .nav{position:static;flex-direction:row;overflow-x:auto;gap:6px;padding-bottom:6px}
+  .nav button{border:1px solid var(--line);white-space:nowrap}
+  .grid,.ctx-grid{grid-template-columns:minmax(0,1fr)}
+}
+@media (max-width:600px){
+  .top{position:static}
+  .top-row{gap:8px 12px;padding-block:10px}
+  .bar-in{gap:6px 10px}
+  .stat{flex-basis:100%;font-size:12.5px}
+  .btns{width:100%;flex-wrap:nowrap}
+  .btn{flex:1 1 0;padding:9px 6px;font-size:13px;text-align:center}
+  body{padding-bottom:130px}
+}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+</style>
+
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <div class="top-row">
+      <div class="brand"><span class="mark" aria-hidden="true"></span>ChatMPA × CONANP</div>
+      <div class="pick"><label for="mesaSel">Mesa</label><select id="mesaSel"></select></div>
+      <button class="btn quiet" id="resetBtn" type="button">Nueva ficha</button>
+    </div>
+    <div class="tabs" role="tablist" aria-label="Tipo de ficha">
+      <button class="tab" role="tab" id="tab-mesa" data-tab="mesa" type="button">Ficha de la mesa</button>
+      <button class="tab" role="tab" id="tab-insumos" data-tab="insumos" type="button">Insumos por área (CBMC)</button>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="banner" id="banner" hidden></div>
+  <div class="codebox" id="codeBox" hidden><label for="codeIn">Código de acceso</label><input id="codeIn" type="password" autocomplete="off" placeholder="Te lo da el equipo de Bool"><button class="btn" id="codeBtn" type="button">Usar código</button></div>
+  <div class="layout">
+    <nav class="nav" id="nav" aria-label="Secciones"></nav>
+    <main id="main"></main>
+  </div>
+</div>
+
+<div class="bar">
+  <div class="wrap bar-in">
+    <div class="stat" id="stat" role="status" aria-live="polite"></div>
+    <div class="btns">
+      <button class="btn" id="copyBtn" type="button">Copiar respuestas</button>
+      <button class="btn" id="dlBtn" type="button">Descargar respaldo</button>
+      <button class="btn primary" id="saveBtn" type="button">Guardar en Notion</button>
+    </div>
+  </div>
+  <div class="wrap fallback" id="fallback">
+    <label class="hint" for="fbText">Selecciona todo el texto y cópialo (Ctrl/Cmd + C).</label>
+    <textarea id="fbText" readonly></textarea>
+  </div>
+</div>
+
+<script>
+(function(){
+"use strict";
+
+/* ---------- Destinos (los ids reales viven en el servidor) ---------- */
+/* >>> CONFIGURACIÓN: pega aquí la URL del webhook de Make (es lo único que hay que editar) <<< */
+var HOOK="https://hook.us2.make.com/kmb0f1js4mdaqs87aocvn4b0yjjdtwx9";
+var DS={mesa:"2af57996-3c6f-46fb-9a1b-39a40dd5e19e",insumos:"0d99db3f-abdf-474b-aae5-b2dc36120070"};
+var NOTION={
+  mesa:{url:"https://app.notion.com/p/7ab45bf119d94b17b3640a7ef44feca1"},
+  insumos:{url:"https://app.notion.com/p/c53674d6e54442c89ce77e9fc6b8411a"}
+};
+
+/* ---------- Mesas (del deck de la sesión) ---------- */
+var MESAS=[
+ {k:"biodiversidad",n:"1 · Biodiversidad",num:1,short:"Biodiversidad",name:"Biodiversidad, Monitoreo Biológico y Estrategias de Conservación",date:"2026-10-05",when:"05 oct · 10:00–14:00",
+  findings:["Cruce de bases y extracción de datos sin perder trazabilidad.","Elaboración de Programas, Estrategias, Planes e indicadores.","Consulta y validación de presencia de especies en ANP."],
+  products:["Listas de especies","Estrategias y Planes","Reportes y opiniones técnicas"],
+  sources:["Monitoreo","SNIB","GBIF","OBIS","NOM-059","Literatura científica"],
+  frictions:["Integración manual","Trazabilidad fuente/versión","Cobertura desigual","Tiempo de análisis"],
+  proposed:["Cruce de bases y extracción de datos sin perder trazabilidad.","Elaboración de Programas, Estrategias, Planes e indicadores."]},
+ {k:"juridico_tic",n:"2 · Jurídico y TIC",num:2,short:"Jurídico y TIC",name:"Rutas institucionales y jurídicas para la implementación · TIC",date:"2026-10-05",when:"05 oct · 16:00–18:00",
+  findings:["Revisión de normatividad ambiental aplicable.","Búsqueda de ordenamientos territoriales y ecológicos.","Elaboración de opiniones jurídicas, dictámenes y reportes."],
+  products:["Opiniones jurídicas","Dictámenes","Reportes"],
+  sources:["DOF","Leyes","Reglamentos","NOM","Programas de Manejo","EPJ"],
+  frictions:["Fuentes dispersas","Vigencia/versiones","Custodia y permisos","Trazabilidad"],
+  proposed:["Revisión de normatividad ambiental aplicable.","Elaboración de opiniones jurídicas, dictámenes y reportes."]},
+ {k:"sig",n:"3 · SIG y Geomática",num:3,short:"SIG y Geomática",name:"Sistemas de Información Geográfica y Geomática",date:"2026-10-06",when:"06 oct · 10:00–14:00",
+  findings:["Búsqueda y estandarización de datos geoespaciales.","Cartografía temática especializada y análisis geoespaciales.","Análisis multitemporales y digitalización de cobertura vegetal."],
+  products:["Mapas","Cartografía para EPJ y PM","Informes, indicadores y autorizaciones"],
+  sources:["Shapefile","GeoJSON","GeoTIFF","Cartografía histórica","Programas de Manejo"],
+  frictions:["Datos históricos distribuidos","Estandarización manual","Acceso a datos","Versionado"],
+  proposed:["Búsqueda y estandarización de datos geoespaciales.","Cartografía temática especializada y análisis geoespaciales."]},
+ {k:"economia",n:"4 · Economía Ambiental",num:4,short:"Economía Ambiental",name:"Economía Ambiental",date:"2026-10-06",when:"06 oct · 16:00–18:00",
+  findings:["Búsqueda de información para reportes y análisis.","Cruce de datos socioeconómicos con polígonos de ANP.","Construcción de insumos para estudios y análisis regulatorios."],
+  products:["Análisis","Estudios socioeconómicos","Insumos para EPJ y Programas de Manejo"],
+  sources:["Censo","DENUE","Marco Geoestadístico","RAN","Programas de Manejo"],
+  frictions:["Datos no acotados al ANP","Cruces manuales","Actualizaciones distintas","Trabajo repetitivo"],
+  proposed:["Cruce de datos socioeconómicos con polígonos de ANP.","Construcción de insumos para estudios y análisis regulatorios."]},
+ {k:"operacion",n:"5 · Operación Regional",num:5,short:"Operación Regional",name:"Operación Regional y Opiniones Técnicas",date:"2026-10-07",when:"07 oct · 10:00–14:00 · híbrida",
+  findings:["Elaboración de opiniones y dictámenes técnicos.","Consolidación de información para auditorías y transparencia.","Búsqueda, análisis e interpretación de información para solicitudes diversas."],
+  products:["Opiniones técnicas","Dictámenes","Respuestas a auditorías y transparencia","Notas e informes"],
+  sources:["Programas de Manejo","Decretos","Monitoreo","MIA/ETJ","Literatura científica"],
+  frictions:["Información distribuida","Síntesis manual","Dependencias entre áreas","Fuentes recientes"],
+  proposed:["Elaboración de opiniones y dictámenes técnicos.","Consolidación de información para auditorías y transparencia."]},
+ {k:"comunicacion",n:"6 · Comunicación y Cultura",num:6,short:"Comunicación y Cultura",name:"Comunicación y Cultura",date:"2026-10-07",when:"07 oct · 16:00–18:00",
+  findings:["Coordinación de información con regionales y ANP.","Generación de comunicación institucional oportuna.","Producción de contenidos de divulgación."],
+  products:["Comunicados","Libros y materiales de divulgación","Contenidos institucionales"],
+  sources:["Áreas internas","Fuentes científicas","Antecedentes institucionales","Sitios públicos"],
+  frictions:["Dependencia de otras áreas","Información tardía","Verificación fuente/fecha","Antecedentes dispersos"],
+  proposed:["Coordinación de información con regionales y ANP.","Producción de contenidos de divulgación."]},
+ {k:"programas",n:"7 · Programas de Manejo y EPJ",num:7,short:"Programas de Manejo y EPJ",name:"Programas de Manejo y Estudios Previos Justificativos",date:"2026-10-08",when:"08 oct · 10:00–14:00",
+  findings:["Construcción y validación de listas de especies.","Consulta de categorías de riesgo y literatura científica.","Integración de apartados técnicos desde múltiples fuentes."],
+  products:["Programas de Manejo","EPJ","Listados y apartados de biodiversidad"],
+  sources:["Programas de Manejo","EPJ","SNIB","GBIF","OBIS","NOM-059","DOF"],
+  frictions:["Grandes volúmenes","Cobertura desigual","Fuente/año/versión","Integración manual"],
+  proposed:["Construcción y validación de listas de especies.","Integración de apartados técnicos desde múltiples fuentes."]},
+ {k:"clima",n:"8 · Cambio Climático e Internacional",num:8,short:"Cambio Climático e Internacional",name:"Cambio Climático y Asuntos Internacionales",date:"2026-10-08",when:"08 oct · 16:00–18:00",
+  findings:["Búsqueda y revisión de antecedentes en múltiples repositorios.","Consolidación de insumos de diferentes áreas y ANP.","Comparación de versiones, compromisos y acciones."],
+  products:["Notas e insumos técnicos","Matrices de seguimiento","Informes nacionales e internacionales"],
+  sources:["Programas de Manejo","Decretos","Monitoreo","Literatura científica","Tratados y convenios"],
+  frictions:["Antecedentes distribuidos","Consolidación manual","Múltiples versiones","Vincular evidencia y acciones"],
+  proposed:["Búsqueda y revisión de antecedentes en múltiples repositorios.","Consolidación de insumos de diferentes áreas y ANP."]}
+];
+
+/* ---------- Preguntas ---------- */
+/* t: text | area | select | multi | date | email | tel · p: nombre exacto de la propiedad en Notion */
+var F1=[
+ {title:"Datos de la sesión",ref:"Antes de empezar",fields:[
+  {p:"Ficha (Mesa y fecha)",l:"Nombre de la ficha",h:"Se completa sola con la mesa y la fecha. Puedes cambiarla.",t:"text",req:1,full:1},
+  {p:"Fecha de la sesión",l:"Fecha de la sesión",t:"date"},
+  {p:"Relator/a",l:"Relator/a",h:"Quien captura esta ficha.",t:"text"},
+  {p:"Participantes (áreas y cargos)",l:"Participantes (áreas y cargos)",t:"area",r:2,full:1}]},
+ {title:"Validar lo que entendimos",ref:"Diapositiva 3 · Partimos de lo que ya conversamos",intro:"Todo lo que se muestra en el cuadro de arriba está por validar.",fields:[
+  {p:"Validación: ¿qué está correcto?",l:"¿Qué está correcto?",h:"De lo que entendimos de esta mesa: procesos, fuentes, productos y fricciones.",t:"area",full:1},
+  {p:"Validación: ¿qué falta o qué corregirían?",l:"¿Qué falta o qué corregirían?",t:"area"},
+  {p:"Validación: ¿qué corresponde a otra unidad?",l:"¿Qué corresponde a otra unidad?",t:"area"},
+  {p:"Proceso elegido",l:"Proceso con el que trabajará la mesa",h:"Elijan uno de los dos propuestos o registren otro.",t:"select",o:["Proceso 1 propuesto","Proceso 2 propuesto","Otro proceso"],proc:1,full:1},
+  {p:"Proceso elegido: descripción",l:"Descripción del proceso elegido",h:"Escríbelo como lo dijo la mesa. Si eligieron otro, descríbelo aquí.",t:"area",full:1}]},
+ {title:"Un caso concreto",ref:"Diapositiva 4 · Tomemos el proceso que acabamos de elegir",fields:[
+  {p:"Caso 1 · ¿Qué datos necesitan?",l:"1 · ¿Qué datos necesitan?",t:"area"},
+  {p:"Caso 2 · ¿Dónde los consultan?",l:"2 · ¿Dónde los consultan?",t:"area"},
+  {p:"Caso 3 · ¿Qué hacen con ellos?",l:"3 · ¿Qué hacen con ellos?",t:"area"},
+  {p:"Caso 4 · ¿Qué producto o decisión generan?",l:"4 · ¿Qué producto o decisión generan?",t:"area"},
+  {p:"Punto crítico",l:"Punto crítico del proceso",h:"¿En qué parte se va más tiempo, cuesta más validar información o aparece más retrabajo?",t:"select",o:["Se va más tiempo","Cuesta más validar información","Hay más retrabajo","Otro"]},
+  {p:"Punto crítico: detalle",l:"Detalle del punto crítico",t:"area"}]},
+ {title:"Capacidad de Preguntar",ref:"Diapositiva 7 · Chat y fuentes conectadas",intro:"Siempre sobre el proceso elegido: ¿cómo tendría que buscar, responder y mostrar fuentes para apoyarlo?",fields:[
+  {p:"Preguntar · Mantener",l:"Mantener",h:"¿Qué forma de consultar o mostrar evidencia ya funciona para este proceso?",t:"area"},
+  {p:"Preguntar · Cambiar",l:"Cambiar",h:"¿Qué debería responder o presentar de otra manera?",t:"area"},
+  {p:"Preguntar · Agregar",l:"Agregar",h:"¿Qué función, control o trazabilidad necesita este proceso?",t:"area"},
+  {p:"Preguntar · Conectar",l:"Conectar",h:"¿Qué dato, documento, base o sistema necesita consultar?",t:"area"},
+  {p:"Preguntar · Adaptación adicional",l:"Algo más",h:"¿Qué adaptación necesitaría esta capacidad que todavía no estamos preguntando?",t:"area",full:1}]},
+ {title:"Capacidad de Generar",ref:"Diapositiva 8 · Reportes y borradores",intro:"¿Qué producto podría apoyar y qué partes requieren revisión humana?",fields:[
+  {p:"Generar · Mantener",l:"Mantener",h:"¿Qué parte del flujo o del resultado ya aporta al proceso?",t:"area"},
+  {p:"Generar · Cambiar",l:"Cambiar",h:"¿Qué estructura, redacción o control debería adaptarse?",t:"area"},
+  {p:"Generar · Agregar",l:"Agregar",h:"¿Qué formato, sección, validación o función hace falta?",t:"area"},
+  {p:"Generar · Conectar",l:"Conectar",h:"¿Qué datos o documentos debe consultar antes de generar?",t:"area"},
+  {p:"Generar · Producto a apoyar primero",l:"Producto de trabajo a apoyar primero",h:"¿Qué producto vale la pena apoyar primero?",t:"area"},
+  {p:"Generar · Parte que siempre revisa una persona",l:"Parte que siempre debe revisar una persona",t:"area"}]},
+ {title:"Capacidad de Visualizar",ref:"Diapositiva 9 · Dashboard",intro:"Seguimiento del mismo proceso: indicadores, comparaciones o alertas que ayuden a entenderlo o a decidir.",fields:[
+  {p:"Visualizar · Indicadores, comparaciones o alertas",l:"Indicadores, comparaciones o alertas con valor",h:"¿Cuáles necesita esta mesa para entender y dar seguimiento al proceso?",t:"area",full:1},
+  {p:"Visualizar · Mantener",l:"¿Qué mantendrían?",t:"area"},
+  {p:"Visualizar · Cambiar",l:"¿Qué cambiarían?",t:"area"},
+  {p:"Visualizar · Agregar",l:"¿Qué agregarían?",t:"area"},
+  {p:"Visualizar · Datos necesarios para funcionar",l:"¿Qué datos necesitaría para funcionar?",t:"area"},
+  {p:"Visualizar · Qué más haría falta",l:"¿Qué más haría falta para que sea útil en este proceso?",t:"area",full:1}]},
+ {title:"Conectar no significa entregar",ref:"Diapositiva 10 · Arquitectura propuesta para discutir",intro:"Custodia, residencia, identidad, seguridad y acceso deben validarse con TIC, jurídico y responsables de la información.",fields:[
+  {p:"Conexión · Impedimento principal o condición crítica",l:"Impedimento principal o condición crítica",h:"¿Qué tendría que resolverse para hacer viable esta conexión?",t:"area",full:1}]},
+ {title:"Cierre y prioridad",ref:"Diapositiva 11 · Una ficha validada y una oportunidad priorizada",intro:"Seleccionen una oportunidad como prioridad de la mesa. Consideren valor operativo, disponibilidad de datos, factibilidad técnica, riesgos y validación humana.",fields:[
+  {p:"Prioridad · Oportunidad priorizada",l:"Oportunidad priorizada",h:"Caso de uso, capacidad de ChatMPA requerida y resultado esperado.",t:"area",full:1},
+  {p:"Prioridad · ¿Por qué importa?",l:"¿Por qué importa?",h:"Valor operativo y beneficio esperado para el proceso elegido.",t:"area"},
+  {p:"Prioridad · Condiciones para explorarla",l:"Condiciones para explorarla",h:"Datos disponibles, factibilidad, riesgos, validación humana y condiciones institucionales.",t:"area"},
+  {p:"Prioridad · Nivel",l:"Prioridad",t:"select",o:["Alta","Media","Baja"]},
+  {p:"Prioridad · Justificación",l:"Justificación breve",t:"area"},
+  {p:"Cierre · Acuerdos",l:"Acuerdos",h:"Lo que quedó validado.",t:"area"},
+  {p:"Cierre · Desacuerdos",l:"Desacuerdos",t:"area"},
+  {p:"Cierre · Responsables y documentos por compartir",l:"Responsables y documentos por compartir",t:"area"},
+  {p:"Cierre · Siguiente paso",l:"Siguiente paso",t:"area"}]}
+];
+
+var F2=[
+ {title:"Datos generales del área",ref:"Sección 1",fields:[
+  {p:"Dirección o Área",l:"Nombre de la Dirección o Área",t:"text",req:1,full:1},
+  {p:"Responsable o contacto (nombre y cargo)",l:"Nombre y cargo del responsable o contacto",t:"text",full:1},
+  {p:"Funciones o atribuciones del área",l:"Principales funciones o atribuciones del área",h:"Breve descripción de 2 a 3 renglones.",t:"area",full:1}]},
+ {title:"Fuentes de información e insumos",ref:"Sección 2",intro:"Sistemas, documentos, bases de datos o plataformas que consultan o alimentan en su trabajo diario.",fields:[
+  {p:"Fuentes internas de CONANP",l:"Fuentes internas de CONANP",h:"SISMAC, mapas, bases de datos internas, archivos en Drive, otros.",t:"area"},
+  {p:"Fuentes externas u oficiales",l:"Fuentes externas u oficiales",h:"SNIB/CONABIO, INEGI, DOF, plataformas satelitales, otros.",t:"area"},
+  {p:"Formato habitual de los datos",l:"Formato habitual de los datos",h:"Tablas de Excel, shapefile/GeoJSON, PDF, textos no estructurados, otros.",t:"area",full:1},
+  {p:"Detalle por fuente",l:"Detalle por fuente o activo relevante",h:"Tipo (fuente oficial, base de datos, sistema o repositorio, documento); responsable o custodio; ubicación; formato; frecuencia de actualización; acceso o restricción; volumen aproximado. Si solo se menciona un sistema (SISMAC, SINAP, SIRCA, Drive, correo), anota que falta identificar el activo que contiene.",t:"area",r:5,full:1}]},
+ {title:"Procesos y metodología interna",ref:"Sección 3",intro:"¿Cómo transforman o analizan la información para cumplir con sus tareas?",fields:[
+  {p:"Procesos clave",l:"Procesos clave que realizan",h:"Sistematización de datos, análisis espacial, revisión de normativa y planes de manejo, fichas técnicas, otros.",t:"area"},
+  {p:"Herramientas o software clave",l:"Herramientas o software clave",h:"QGIS, ArcGIS, R, Excel, otras. Indica también conectividad y licencias.",t:"area"},
+  {p:"Tipo de producto del proceso",l:"¿El proceso produce un borrador, un insumo o una decisión oficial?",t:"select",o:["Borrador","Insumo técnico","Decisión oficial","Varía según el caso"]},
+  {p:"Cuellos de botella o retos actuales",l:"Cuellos de botella o retos actuales",h:"Distingue los pasos repetitivos (potencialmente automatizables) de los que requieren juicio técnico o validación experta.",t:"area"}]},
+ {title:"Productos y entregables",ref:"Sección 4",intro:"¿Qué resultados, documentos o reportes finales produce el área?",fields:[
+  {p:"Entregables principales",l:"Entregables principales",h:"Reportes de monitoreo, dictámenes técnicos, mapas temáticos, minutas, fichas normativas, otros.",t:"area"},
+  {p:"Destinatarios o usuarios finales",l:"Destinatarios o usuarios finales",h:"Comisionado, Direcciones Regionales, público en general, otros.",t:"area"},
+  {p:"Frecuencia de generación",l:"Frecuencia de generación",t:"select",o:["Diaria","Semanal","Mensual","Por demanda","Otra"]},
+  {p:"Quién valida cada entregable",l:"Quién valida cada entregable",h:"Y si es borrador, insumo técnico o decisión formal.",t:"area"}]},
+ {title:"Oportunidades para ChatMPA",ref:"Sección 5",intro:"Respuestas preliminares para explorar durante la mesa presencial.",fields:[
+  {p:"Consulta o reporte que más tiempo consume",l:"¿Qué consulta o reporte rutinario consume más tiempo a su equipo?",t:"area"},
+  {p:"Fuentes prioritarias para integrar en ChatMPA",l:"¿Qué fuentes de datos de su área serían prioritarias para integrar en ChatMPA?",t:"area"}]},
+ {title:"Acceso, restricciones y clasificación",ref:"Sección 6",intro:"La clasificación jurídica corresponde a CONANP; aquí solo se registra lo reportado por el área.",fields:[
+  {p:"Quién crea, consulta, modifica, valida y autoriza",l:"¿Quién crea, consulta, modifica, valida y autoriza la información?",t:"area"},
+  {p:"Clasificación reportada",l:"¿Hay datos públicos, internos, reservados o confidenciales?",h:"Según lo reportado, por confirmar.",t:"area"},
+  {p:"¿Datos personales o localidades sensibles de especies?",l:"¿Contiene datos personales o localidades sensibles de especies?",t:"select",o:["Sí","No","No sé"]},
+  {p:"Compartición con terceros u otras áreas",l:"¿Se comparte con terceros o con otras áreas? ¿Con qué finalidad?",t:"area"}]},
+ {title:"Validación humana y límites de automatización",ref:"Sección 7",fields:[
+  {p:"Pasos repetitivos que ChatMPA podría apoyar",l:"¿Qué pasos son repetitivos y podrían apoyarse con ChatMPA?",t:"area"},
+  {p:"Decisiones que NO deben automatizarse",l:"¿Qué decisiones requieren criterio técnico, jurídico o institucional y no deben automatizarse?",t:"area"},
+  {p:"Evidencia o trazabilidad que debe conservar cada resultado",l:"¿Qué evidencia, cita o trazabilidad debe conservar cada resultado?",t:"area",full:1}]},
+ {title:"Caso candidato",ref:"Sección 8",fields:[
+  {p:"Caso · Finalidad y usuario",l:"Finalidad y usuario del caso",t:"area"},
+  {p:"Caso · Proceso que mejora y producto esperado",l:"Proceso que mejora y producto esperado",t:"area"},
+  {p:"Caso · Activos de información y restricciones",l:"Activos de información que requiere y sus restricciones",t:"area"},
+  {p:"Caso · Validación humana y dependencias",l:"Validación humana necesaria y dependencias",t:"area"},
+  {p:"Caso · Indicador de resultado propuesto",l:"Indicador de resultado propuesto",t:"area",full:1}]},
+ {title:"Preguntas de validación",ref:"Sección 9",fields:[
+  {p:"Validación · Fuente oficial y quién la mantiene",l:"¿Cuál es la fuente oficial y quién la mantiene?",t:"area"},
+  {p:"Validación · Versión, fecha de corte y frecuencia",l:"¿Qué versión, fecha de corte y frecuencia de actualización tiene?",t:"area"},
+  {p:"Validación · Usos permitidos",l:"¿Puede consultarse, cargarse, procesarse con IA y reutilizarse?",h:"Marca todo lo que aplique, o solo las acciones permitidas.",t:"multi",o:["Consultarse","Cargarse","Procesarse con IA","Reutilizarse","Por confirmar"],full:1},
+  {p:"Validación · Ejemplo real utilizable en el piloto",l:"¿Qué ejemplo real puede utilizarse legalmente durante el piloto?",t:"area",full:1}]},
+ {title:"Información personal",ref:"Sección 10",intro:"Opcional. Se usa solo para dar seguimiento a esta ficha.",fields:[
+  {p:"Contacto · Nombre completo",l:"Nombre completo",t:"text"},
+  {p:"Contacto · Cargo",l:"Cargo",t:"text"},
+  {p:"Contacto · Teléfono",l:"Teléfono",t:"tel"},
+  {p:"Contacto · Correo electrónico",l:"Correo electrónico",t:"email"},
+  {p:"Contacto · Dirección CONANP",l:"Dirección CONANP",t:"text",full:1}]}
+];
+
+var TABS={
+  mesa:{label:"Ficha de la mesa",secs:F1,titleProp:"Ficha (Mesa y fecha)",dest:NOTION.mesa},
+  insumos:{label:"Ficha de insumos por área",secs:F2,titleProp:"Dirección o Área",dest:NOTION.insumos}
+};
+Object.keys(TABS).forEach(function(k){
+  var i=0; TABS[k].flat=[];
+  TABS[k].secs.forEach(function(s){ s.fields.forEach(function(f){ f.i=i++; TABS[k].flat.push(f); }); });
+});
+
+/* ---------- Estado ---------- */
+var MAXLEN=6000;
+var $=function(s,r){return (r||document).querySelector(s);};
+var tab="mesa", mesaKey="", values={}, rec={}, sid="", busy=false, titleAuto=true, needsCode=false, code="", admin=false;
+var saveTimer=null, resetArmed=false;
+
+function lsGet(k){try{return localStorage.getItem(k);}catch(e){return null;}}
+function lsSet(k,v){try{localStorage.setItem(k,v);return true;}catch(e){return false;}}
+function mesa(){for(var i=0;i<MESAS.length;i++){if(MESAS[i].k===mesaKey)return MESAS[i];}return MESAS[0];}
+function key(){return "fichasChatMPA:v1:"+tab+":"+mesaKey;}
+function newId(){
+  try{if(window.crypto&&crypto.randomUUID)return crypto.randomUUID();}catch(e){}
+  var s=""; for(var i=0;i<32;i++)s+=Math.floor(Math.random()*16).toString(16);
+  return s.slice(0,8)+"-"+s.slice(8,12)+"-"+s.slice(12,16)+"-"+s.slice(16,20)+"-"+s.slice(20);
+}
+function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
+function fmtTime(ts){try{return new Date(ts).toLocaleTimeString("es-MX",{hour:"2-digit",minute:"2-digit"});}catch(e){return "";}}
+function shortDate(iso){
+  var m=["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"], p=String(iso||"").split("-");
+  if(p.length!==3)return ""; return parseInt(p[2],10)+" "+m[parseInt(p[1],10)-1];
+}
+
+function loadDraft(){
+  values={}; rec={}; titleAuto=true; sid="";
+  var raw=lsGet(key());
+  if(raw){try{var o=JSON.parse(raw); values=o.v||{}; rec=o.rec||{}; sid=o.sid||""; titleAuto=(o.ta!==false);}catch(e){}}
+  if(!sid){sid=newId(); lsSet(key(),JSON.stringify({v:values,rec:rec,sid:sid,ta:titleAuto,t:Date.now()}));}
+  if(tab==="mesa"){
+    if(!values["Fecha de la sesión"])values["Fecha de la sesión"]=mesa().date;
+    if(titleAuto||!values["Ficha (Mesa y fecha)"])autoTitle();
+  }
+}
+function persist(){
+  var ok=lsSet(key(),JSON.stringify({v:values,rec:rec,sid:sid,ta:titleAuto,t:Date.now()}));
+  setDraftNote(ok);
+}
+function schedulePersist(){clearTimeout(saveTimer); saveTimer=setTimeout(persist,350);}
+function autoTitle(){
+  var m=mesa(), d=shortDate(values["Fecha de la sesión"]);
+  values["Ficha (Mesa y fecha)"]="Mesa "+m.n+(d?" · "+d:"");
+}
+
+/* ---------- Render ---------- */
+function procLabel(opt){
+  var m=mesa();
+  if(opt==="Proceso 1 propuesto")return "Proceso 1 · "+m.proposed[0];
+  if(opt==="Proceso 2 propuesto")return "Proceso 2 · "+m.proposed[1];
+  return "Otro proceso (descríbelo abajo)";
+}
+function fieldHTML(f){
+  var id="f"+f.i, req=f.req?' <span class="req" aria-hidden="true">*</span>':"", ctl="";
+  var hint=f.h?'<span class="hint" id="h'+f.i+'">'+esc(f.h)+'</span>':"";
+  var desc=f.h?' aria-describedby="h'+f.i+'"':"";
+  if(f.t==="area"){
+    ctl='<textarea id="'+id+'" data-i="'+f.i+'" rows="'+(f.r||3)+'" maxlength="'+MAXLEN+'"'+desc+'></textarea><span class="cnt" id="c'+f.i+'" hidden></span>';
+  }else if(f.t==="select"){
+    ctl='<select id="'+id+'" data-i="'+f.i+'"'+desc+'><option value="">Selecciona…</option>'+f.o.map(function(o){
+      return '<option value="'+esc(o)+'">'+esc(f.proc?procLabel(o):o)+'</option>';}).join("")+'</select>';
+  }else if(f.t==="multi"){
+    ctl='<div class="checks" role="group" aria-labelledby="l'+f.i+'">'+f.o.map(function(o,j){
+      return '<label><input type="checkbox" data-i="'+f.i+'" data-o="'+esc(o)+'" id="'+id+'_'+j+'"> '+esc(o)+'</label>';}).join("")+'</div>';
+  }else{
+    var type=f.t==="date"?"date":(f.t==="email"?"email":(f.t==="tel"?"tel":"text"));
+    ctl='<input id="'+id+'" data-i="'+f.i+'" type="'+type+'"'+(f.t==="text"?' maxlength="300"':"")+desc+'>';
+  }
+  var lab=f.t==="multi"?'<span class="lbl" id="l'+f.i+'">'+esc(f.l)+req+'</span>':'<label for="'+id+'">'+esc(f.l)+req+'</label>';
+  return '<div class="fld'+(f.full?" full":"")+'">'+lab+hint+ctl+'<span class="err" id="e'+f.i+'" hidden></span></div>';
+}
+function contextHTML(){
+  var m=mesa();
+  function li(a){return a.map(function(x){return "<li>"+esc(x)+"</li>";}).join("");}
+  function ch(a){return a.map(function(x){return '<span class="chip">'+esc(x)+"</span>";}).join("");}
+  return '<details class="ctx" open><summary>Lo que entendimos de esta mesa <span>· por validar</span></summary>'+
+    '<p class="when">'+esc(m.name)+" · "+esc(m.when)+'</p>'+
+    '<div class="ctx-grid"><div><div class="blk"><h3>Procesos o actividades reportadas</h3><ul>'+li(m.findings)+'</ul></div>'+
+    '<div class="blk"><h3>Productos o decisiones</h3><div class="chips">'+ch(m.products)+'</div></div></div>'+
+    '<div><div class="blk"><h3>Datos y fuentes que utilizan</h3><div class="chips">'+ch(m.sources)+'</div></div>'+
+    '<div class="blk"><h3>Fricciones reportadas</h3><ul>'+li(m.frictions)+'</ul></div></div></div>'+
+    '<div class="blk" style="margin-top:14px"><h3>Dos procesos propuestos para trabajar hoy</h3><ol>'+li(m.proposed)+'</ol></div></details>';
+}
+function render(){
+  var T=TABS[tab], h="";
+  $("#tab-mesa").setAttribute("aria-selected",tab==="mesa"?"true":"false");
+  $("#tab-insumos").setAttribute("aria-selected",tab==="insumos"?"true":"false");
+  if(tab==="mesa"){h+=contextHTML();}
+  else{h+='<p class="note">Esta ficha prepara la evidencia trazable de cada mesa del co-diseño. No aprueba ni compromete desarrollos. Describe procesos, activos de información, responsables, restricciones y casos candidatos, distinguiendo fuente oficial, base de datos y sistema o repositorio. Se llena una vez por área o persona.</p>';}
+  T.secs.forEach(function(s,si){
+    h+='<section class="sec" id="sec'+si+'"><div class="sec-h"><div><p class="eyebrow">'+esc(s.ref)+'</p><h2>'+esc(s.title)+'</h2></div><span class="count" id="cnt'+si+'"></span></div>'+
+       (s.intro?'<p class="intro">'+esc(s.intro)+'</p>':"")+'<div class="grid">'+s.fields.map(fieldHTML).join("")+'</div></section>';
+  });
+  $("#main").innerHTML=h;
+  $("#nav").innerHTML=T.secs.map(function(s,si){
+    return '<button type="button" data-sec="'+si+'"><span>'+esc(s.title)+'</span><span class="n" id="nn'+si+'"></span></button>';}).join("");
+  T.flat.forEach(function(f){ setControl(f); });
+  updateCounts(); updateSaveLabel(); setDraftNote(true);
+}
+function setControl(f){
+  var v=values[f.p], id="f"+f.i;
+  if(f.t==="multi"){
+    var arr=Array.isArray(v)?v:[];
+    f.o.forEach(function(o,j){var c=$("#"+id+"_"+j); if(c)c.checked=arr.indexOf(o)>=0;});
+  }else{
+    var el=$("#"+id); if(el)el.value=(v==null?"":v);
+    if(f.t==="area")updateCnt(f);
+  }
+}
+function updateCnt(f){
+  var el=$("#f"+f.i), c=$("#c"+f.i); if(!el||!c)return;
+  var n=el.value.length;
+  if(n>=MAXLEN-300){c.hidden=false; c.textContent=n+" / "+MAXLEN+(n>=MAXLEN?" · límite por pregunta; continúa en la siguiente":"");}
+  else c.hidden=true;
+}
+function filled(f){
+  var v=values[f.p];
+  return Array.isArray(v)?v.length>0:(v!=null&&String(v).trim()!=="");
+}
+function isMeta(f){return f.p===TABS[tab].titleProp||f.p==="Fecha de la sesión";}
+function updateCounts(){
+  TABS[tab].secs.forEach(function(s,si){
+    var qs=s.fields.filter(function(f){return !isMeta(f);}), done=qs.filter(filled).length;
+    var c=$("#cnt"+si), n=$("#nn"+si);
+    if(qs.length){
+      if(c)c.textContent=done+" de "+qs.length;
+      if(n){n.textContent=done+"/"+qs.length; n.className="n"+(done===qs.length?" done":"");}
+    }else{ if(c)c.textContent=""; if(n)n.textContent=""; }
+  });
+}
+function answeredCount(){
+  return TABS[tab].flat.filter(function(f){return !isMeta(f)&&filled(f);}).length;
+}
+function totalCount(){return TABS[tab].flat.filter(function(f){return !isMeta(f);}).length;}
+
+/* ---------- Estado visible ---------- */
+function setStat(cls,html){var s=$("#stat"); s.className="stat"+(cls?" "+cls:""); s.innerHTML=html;}
+function notionLink(u){return admin&&u?' <a href="'+esc(u)+'" target="_blank" rel="noopener">Abrir en Notion</a>':"";}
+function setDraftNote(ok){
+  if(busy)return;
+  var n=answeredCount(), t=totalCount();
+  var base=n+" de "+t+" preguntas con respuesta. ";
+  if(rec.url&&rec.dirty)setStat("warn",base+"Hay cambios sin guardar. Toca Actualizar en Notion.");
+  else if(rec.url)setStat("ok",base+"Guardada en Notion a las "+fmtTime(rec.savedAt)+"."+notionLink(rec.url));
+  else setStat("",base+(ok?"Borrador guardado en este navegador.":"Este navegador no permite guardar borradores: usa Copiar respuestas."));
+}
+function updateSaveLabel(){
+  $("#saveBtn").textContent=rec.url?"Actualizar en Notion":"Guardar en Notion";
+}
+
+/* ---------- Validación y armado ---------- */
+function validate(){
+  var errs=[], T=TABS[tab];
+  T.flat.forEach(function(f){var e=$("#e"+f.i); if(e){e.hidden=true; e.textContent="";}});
+  function bad(f,msg){errs.push(f); var e=$("#e"+f.i); if(e){e.hidden=false; e.textContent=msg;}}
+  T.flat.forEach(function(f){
+    if(f.req&&!filled(f))bad(f,"Este dato es obligatorio.");
+    if(f.t==="email"&&filled(f)&&!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(values[f.p]).trim()))bad(f,"Revisa el correo electrónico.");
+  });
+  if(!errs.length&&answeredCount()===0){
+    errs.push({i:T.flat[0].i}); setStat("warn","La ficha no tiene respuestas todavía. Llena al menos una pregunta antes de guardar.");
+  }
+  return errs;
+}
+function buildValues(){
+  var T=TABS[tab], out={}, m=mesa();
+  T.flat.forEach(function(f){
+    var v=values[f.p];
+    if(f.t==="multi"){out[f.p]=Array.isArray(v)?v:[]; return;}
+    out[f.p]=(v==null?"":String(v)).trim().slice(0,MAXLEN);
+  });
+  out["Mesa"]=m.n;
+  return out;
+}
+function plainText(){
+  var T=TABS[tab], m=mesa(), out=[];
+  out.push((tab==="mesa"?"FICHA DE LA MESA":"FICHA DE INSUMOS POR ÁREA")+" — "+(values[T.titleProp]||""));
+  out.push("Mesa: "+m.n+" · "+m.name+" ("+m.when+")");
+  T.secs.forEach(function(s){
+    var lines=[];
+    s.fields.forEach(function(f){
+      if(f.p===T.titleProp)return;
+      if(!filled(f))return;
+      var v=values[f.p]; v=Array.isArray(v)?v.join(", "):String(v).trim();
+      if(f.proc)v=procLabel(v)+(v?"":"");
+      lines.push(f.l+":\n"+v);
+    });
+    if(lines.length){out.push(""); out.push("## "+s.title); out.push(lines.join("\n\n"));}
+  });
+  return out.join("\n");
+}
+
+/* ---------- Guardado en Notion (vía webhook de Make) ---------- */
+function showCode(on){$("#codeBox").hidden=!on;}
+function hookReady(){return /^https:\/\/hook\.[a-z0-9.-]*make\.com\//i.test(HOOK)||/^https?:\/\/(127\.0\.0\.1|localhost)[:\/]/.test(HOOK);}
+function richText(s){var o=[];for(var i=0;i<s.length;i+=2000)o.push({type:"text",text:{content:s.slice(i,i+2000)}});return o;}
+function notionType(f){
+  if(f.p===TABS[tab].titleProp)return "title";
+  return {text:"rich_text",area:"rich_text",select:"select",multi:"multi_select",date:"date",email:"email",tel:"phone_number"}[f.t];
+}
+function propFor(type,v,upd){
+  var s=Array.isArray(v)?"":String(v==null?"":v).trim();
+  switch(type){
+    case "title": return s?{title:richText(s)}:undefined;
+    case "rich_text": return s?{rich_text:richText(s)}:(upd?{rich_text:[]}:undefined);
+    case "select": return s?{select:{name:s.replace(/,/g," ")}}:(upd?{select:null}:undefined);
+    case "multi_select":
+      var a=(Array.isArray(v)?v:[]).map(function(x){return String(x).trim();}).filter(Boolean);
+      return a.length?{multi_select:a.map(function(n){return {name:n.replace(/,/g," ")};})}:(upd?{multi_select:[]}:undefined);
+    case "date": return s?{date:{start:s}}:(upd?{date:null}:undefined);
+    case "email": return s?{email:s}:(upd?{email:null}:undefined);
+    case "phone_number": return s?{phone_number:s}:(upd?{phone_number:null}:undefined);
+  }
+}
+/* Cuerpos ya en formato de la API de Notion: Make solo los reenvía. */
+function buildBodies(){
+  var T=TABS[tab], create={}, update={};
+  T.flat.forEach(function(f){
+    var t=notionType(f), v=values[f.p];
+    if(f.t!=="multi")v=(v==null?"":String(v)).trim().slice(0,MAXLEN);
+    var c=propFor(t,v,false), u=propFor(t,v,true);
+    if(c!==undefined)create[f.p]=c;
+    if(u!==undefined)update[f.p]=u;
+  });
+  create["Mesa"]={select:{name:mesa().n}}; update["Mesa"]=create["Mesa"];
+  create["ID de envio"]={rich_text:richText(sid)};
+  return {
+    queryBody:JSON.stringify({filter:{property:"ID de envio",rich_text:{equals:sid}},page_size:1}),
+    createBody:JSON.stringify({parent:{type:"data_source_id",data_source_id:DS[tab]},properties:create}),
+    updateBody:JSON.stringify({properties:update})
+  };
+}
+function explain(status,data){
+  var c=data&&data.code, m=data&&data.message;
+  if(c==="bad_code")return {m:"El código de acceso no es correcto. Pídelo al equipo de Bool.",code:true};
+  if(c==="notion_rejected"||c==="notion_error")return {m:"Notion no aceptó la ficha"+(m?": "+esc(m):"")+". Usa Copiar respuestas y avisa al equipo de Bool."};
+  return {m:"No se pudo confirmar el guardado. Tus respuestas siguen en este borrador. Vuelve a tocar Guardar (no se duplica) o usa Copiar respuestas.",amb:true};
+}
+async function saveNotion(){
+  if(busy)return;
+  var errs=validate();
+  if(errs.length){var el=$("#f"+errs[0].i); if(el)el.focus(); return;}
+  if(!hookReady()){setStat("bad","Falta configurar la URL del webhook de Make en esta página. Avisa al equipo de Bool y usa Copiar respuestas mientras tanto."); return;}
+  if(!code){showCode(true); setStat("warn","Escribe el código de acceso que te dio el equipo de Bool."); $("#codeIn").focus(); return;}
+  busy=true; $("#saveBtn").disabled=true; $("#saveBtn").textContent="Guardando…"; setStat("","Guardando en Notion…");
+  var T=TABS[tab], updating=!!rec.url, ctrl=new AbortController(), to=setTimeout(function(){ctrl.abort();},40000);
+  try{
+    var b=buildBodies(), f=new URLSearchParams();
+    f.set("code",code); f.set("tab",tab); f.set("submissionId",sid); f.set("dataSourceId",DS[tab]);
+    f.set("queryBody",b.queryBody); f.set("createBody",b.createBody); f.set("updateBody",b.updateBody);
+    var r=await fetch(HOOK,{method:"POST",body:f,signal:ctrl.signal});
+    clearTimeout(to);
+    var txt=await r.text(), data=null; try{data=JSON.parse(txt);}catch(e){}
+    if(!r.ok||!data||data.ok!==true){var er=new Error("hook"); er.status=r.status; er.data=data; throw er;}
+    rec={url:data.url||T.dest.url,pageId:data.pageId,savedAt:Date.now(),dirty:false};
+    persist();
+    busy=false; $("#saveBtn").disabled=false; updateSaveLabel();
+    setStat("ok",(updating?"Ficha actualizada":"Ficha guardada")+" en Notion a las "+fmtTime(rec.savedAt)+". Para capturar otra ficha, toca Nueva ficha."+notionLink(rec.url));
+  }catch(e){
+    clearTimeout(to);
+    busy=false; $("#saveBtn").disabled=false; updateSaveLabel();
+    var x;
+    if(e&&e.status)x=explain(e.status,e.data);
+    else x={m:"No hubo conexión con el servidor. Tus respuestas siguen en este borrador; vuelve a tocar Guardar cuando haya señal (no se duplica) o usa Copiar respuestas.",amb:true};
+    if(x.code){code=""; try{localStorage.removeItem("fichasChatMPA:code");}catch(_){} showCode(true);}
+    setStat(x.amb?"warn":"bad",x.m);
+  }
+}
+
+/* ---------- Copiar y respaldo ---------- */
+async function copyText(){
+  var txt=plainText(), fb=$("#fallback");
+  try{
+    await navigator.clipboard.writeText(txt);
+    fb.classList.remove("show"); setStat("ok","Respuestas copiadas. Pégalas en un documento como respaldo.");
+  }catch(e){
+    $("#fbText").value=txt; fb.classList.add("show"); $("#fbText").focus(); $("#fbText").select();
+    setStat("warn","Tu navegador no permitió copiar solo. El texto está abajo, listo para seleccionar.");
+  }
+}
+function download(){
+  var m=mesa(), name="ficha-"+(tab==="mesa"?"mesa":"insumos")+"-"+m.k+".md";
+  try{
+    var blob=new Blob([plainText()],{type:"text/markdown;charset=utf-8"}), u=URL.createObjectURL(blob), a=document.createElement("a");
+    a.href=u; a.download=name; document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    setTimeout(function(){URL.revokeObjectURL(u);},2000);
+    setStat("ok","Respaldo descargado como "+esc(name)+".");
+  }catch(e){setStat("warn","No se pudo descargar el respaldo. Usa Copiar respuestas.");}
+}
+
+/* ---------- Eventos ---------- */
+function onInput(ev){
+  var el=ev.target, i=el.dataset&&el.dataset.i; if(i==null)return;
+  var f=TABS[tab].flat[+i]; if(!f)return;
+  if(f.t==="multi"){
+    var arr=[]; f.o.forEach(function(o,j){var c=$("#f"+f.i+"_"+j); if(c&&c.checked)arr.push(o);});
+    values[f.p]=arr;
+  }else{
+    values[f.p]=el.value;
+    if(f.t==="area")updateCnt(f);
+    if(tab==="mesa"&&f.p==="Ficha (Mesa y fecha)")titleAuto=false;
+    if(tab==="mesa"&&f.p==="Fecha de la sesión"&&titleAuto){autoTitle(); setControl(TABS.mesa.flat[0]);}
+  }
+  var e=$("#e"+f.i); if(e)e.hidden=true;
+  if(rec.url){rec.dirty=true;}
+  updateCounts(); schedulePersist(); if(!busy)setDraftNote(true);
+}
+function switchTo(newTab,newMesa){
+  persist();
+  if(newTab)tab=newTab; if(newMesa)mesaKey=newMesa;
+  lsSet("fichasChatMPA:v1:last",JSON.stringify({tab:tab,mesa:mesaKey}));
+  resetArmed=false; $("#resetBtn").textContent="Nueva ficha";
+  loadDraft(); render(); window.scrollTo(0,0);
+}
+function init(){
+  $("#mesaSel").innerHTML=MESAS.map(function(m){return '<option value="'+m.k+'">'+esc(m.n)+" · "+esc(m.when)+"</option>";}).join("");
+  var last=null; try{last=JSON.parse(lsGet("fichasChatMPA:v1:last")||"null");}catch(e){}
+  mesaKey=(last&&last.mesa)||MESAS[0].k; tab=(last&&last.tab&&TABS[last.tab])?last.tab:"mesa";
+  try{
+    var qs=new URLSearchParams(location.search), qm=qs.get("mesa"), qt=qs.get("tab");
+    if(qm&&MESAS.some(function(x){return x.k===qm;}))mesaKey=qm;
+    if(qt&&TABS[qt])tab=qt;
+    admin=qs.get("admin")==="1";
+  }catch(e){}
+  var ok=false; MESAS.forEach(function(m){if(m.k===mesaKey)ok=true;}); if(!ok)mesaKey=MESAS[0].k;
+  $("#mesaSel").value=mesaKey;
+  $("#mesaSel").addEventListener("change",function(e){switchTo(null,e.target.value);});
+  document.querySelectorAll(".tab").forEach(function(b){b.addEventListener("click",function(){switchTo(b.dataset.tab,null);});});
+  $("#main").addEventListener("input",onInput); $("#main").addEventListener("change",onInput);
+  $("#nav").addEventListener("click",function(e){
+    var b=e.target.closest("button[data-sec]"); if(!b)return;
+    var s=$("#sec"+b.dataset.sec); if(s)s.scrollIntoView({behavior:"smooth",block:"start"});
+  });
+  $("#saveBtn").addEventListener("click",saveNotion);
+  $("#copyBtn").addEventListener("click",copyText);
+  $("#dlBtn").addEventListener("click",download);
+  $("#resetBtn").addEventListener("click",function(){
+    if(!rec.url&&answeredCount()>0&&!resetArmed){resetArmed=true; this.textContent="¿Borrar esta ficha sin guardar? Toca otra vez"; return;}
+    resetArmed=false; this.textContent="Nueva ficha";
+    try{localStorage.removeItem(key());}catch(e){}
+    loadDraft(); render(); window.scrollTo(0,0);
+  });
+  $("#codeBtn").addEventListener("click",function(){
+    var v=$("#codeIn").value.trim(); if(!v)return;
+    code=v; try{localStorage.setItem("fichasChatMPA:code",v);}catch(e){}
+    showCode(false); setStat("ok","Código listo. Toca Guardar en Notion.");
+  });
+  $("#codeIn").addEventListener("keydown",function(e){if(e.key==="Enter"){e.preventDefault(); $("#codeBtn").click();}});
+  loadDraft(); render();
+  connect();
+}
+async function connect(){
+  needsCode=true;
+  if(!hookReady()){showBanner("Esta copia de la página todavía no tiene la URL del webhook de Make. Puedes llenar la ficha y usar Copiar respuestas; guardar en Notion funcionará cuando Bool termine la configuración.");}
+  try{code=localStorage.getItem("fichasChatMPA:code")||"";}catch(e){}
+  if(!code)showCode(true);
+}
+function showBanner(t){var b=$("#banner"); b.textContent=t; b.hidden=false;}
+
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init); else init();
+})();
+</script>
+</body>
+</html>
